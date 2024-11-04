@@ -1,0 +1,11 @@
+[
+  {
+    "id": 2,
+    "title": "Pantalón",
+    "description": "Pantalón Jogging",
+    "price": 4000,
+    "thumbnail": "pantalon.jpg",
+    "code": "XYZ456",
+    "stock": 5
+  }
+]
