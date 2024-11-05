@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ProductManager } from '../Dao/ProductManager.js';
-// import { io } from '../app.js';
+
 const router = Router();
 const productManager = new ProductManager('./src/Data/products.json');
 
@@ -26,6 +26,7 @@ router.post('/', async (req, res) => {
     const newProduct = { title, description, code, price, status, stock, category, thumbnails };
     try {
         await productManager.addProduct(newProduct);
+        io.emit("newProduct", newProduct)
         res.status(201).send("Producto agregado exitosamente");
     } catch (error) {
         res.status(400).send({ error: error.message });
@@ -47,6 +48,7 @@ router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
     try {
         await productManager.deleteProduct(Number(pid));
+        io.emit("deleteProduct", Number(pid));
         res.status(200).send(`Producto con id ${pid} eliminado`);
     } catch (error) {
         res.status(404).send({ error: error.message });

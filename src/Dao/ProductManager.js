@@ -1,20 +1,28 @@
 import fs from "fs";
 
 export class ProductManager {
-
     #path = "";
+    
     constructor(rutaArchivo) {
         this.#path = rutaArchivo;
         this.idInicial = 1; 
+        this.initId();
     }
 
+
+    async initId() {
+        const products = await this.getProducts();
+        if (products.length > 0) {
+            
+            this.idInicial = Math.max(...products.map(p => p.id)) + 1;
+        }
+    }
     
     async addProduct(product) {
         const { title, description, price, thumbnails, code, stock, category, status = true } = product;
 
-        
         if (!title || !description || !price || !thumbnails || !code || !stock || !category || !Array.isArray(thumbnails)) {
-            throw new Error("Todos los campos son obligatorios y thumbnails debe tener la ruta correcta donde esta alojada la imagen");
+            throw new Error("Todos los campos son obligatorios y thumbnails debe tener la ruta correcta donde está alojada la imagen");
         }
 
         const products = await this.getProducts();
@@ -37,12 +45,14 @@ export class ProductManager {
         };
 
         products.push(newProduct);
+
+        
         this.idInicial++;
 
         await this.saveProducts(products);
+        io.emit("updateProducts", products);
     }
 
-    
     async getProducts() {
         if (fs.existsSync(this.#path)) {
             return JSON.parse(await fs.promises.readFile(this.#path, { encoding: "utf-8" }));
@@ -51,11 +61,9 @@ export class ProductManager {
         }
     }
 
-    
     async saveProducts(products) {
         await fs.promises.writeFile(this.#path, JSON.stringify(products, null, 2));
     }
-
 
     async getProductById(id) {
         const products = await this.getProducts();
@@ -66,7 +74,6 @@ export class ProductManager {
         return product;
     }
 
-    
     async updateProduct(id, updatedFields) {
         const products = await this.getProducts();
         const productIndex = products.findIndex((p) => p.id === id);
@@ -75,7 +82,6 @@ export class ProductManager {
             throw new Error(`Producto con id ${id} no encontrado`);
         }
 
-        
         const updatedProduct = { ...products[productIndex], ...updatedFields, id };
 
         products[productIndex] = updatedProduct;
@@ -84,16 +90,17 @@ export class ProductManager {
         return updatedProduct;
     }
 
-    
     async deleteProduct(id) {
         const products = await this.getProducts();
-        const newProducts = products.filter((p) => p.id !== id);
+        const index = products.findIndex((p) => p.id === id);
 
-        
-        if (products.length === newProducts.length) {
-            throw new Error("Producto no encontrado");
+        if (index === -1) {
+            throw new Error(`Producto con Id ${id} no encontrado`);
         }
 
-        await this.saveProducts(newProducts);
+        products.splice(index, 1);
+        await this.saveProducts(products);
+        io.emit("updateProducts", products);
+        return `Producto con id ${id} eliminado exitosamente`;
     }
 }

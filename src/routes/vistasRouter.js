@@ -14,12 +14,12 @@ router.get("/", async (req, res)=> {
     }) 
 })
 
-router.get("/realtimeproducts", async (req, res)=>{
-    let allProducts= await productManager.getProducts()
+router.get("/realtimeproducts", async (req, res) => {
+    let allProducts = await productManager.getProducts();
     res.render("realtimeproducts", {
         titulo: "Productos en tiempo real",
         products: allProducts
-        })
-})
+    });
+});
 
 export default router;

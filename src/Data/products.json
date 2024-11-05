@@ -1,11 +1,54 @@
 [
   {
-    "id": 2,
-    "title": "Pantalón",
-    "description": "Pantalón Jogging",
+    "id": 3,
+    "title": "medias Azul",
+    "description": "medias color Azul",
     "price": 4000,
-    "thumbnail": "pantalon.jpg",
-    "code": "XYZ456",
-    "stock": 5
+    "thumbnails": [
+      "medias.jpg"
+    ],
+    "code": "jkl890",
+    "stock": 10,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 5,
+    "title": "Remera",
+    "description": "Remera Algodon",
+    "price": 9000,
+    "thumbnails": [
+      "Remera.jpg"
+    ],
+    "code": "lkj677",
+    "stock": 10,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 6,
+    "title": "Joggin",
+    "description": "Joggin Algodon",
+    "price": 9000,
+    "thumbnails": [
+      "Joggin.jpg"
+    ],
+    "code": "ggg678",
+    "stock": 10,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 7,
+    "title": "Joggin",
+    "description": "Joggin Algodon",
+    "price": 9000,
+    "thumbnails": [
+      "Joggin.jpg"
+    ],
+    "code": "ggg676",
+    "stock": 10,
+    "category": "Ropa",
+    "status": true
   }
 ]
